@@ -21,18 +21,41 @@ $(document).ready(function () {
         });
     }
 
-    // FILTRO DE NOMBRE
+    var allProducts = JSON.parse(localStorage.getItem("data"));
     var data = []
-    var brands = [];
-    var categories = [];
+    var brandsSet = new Set();
+    var categoriesSet = new Set();
     for (const iterator of JSON.parse(localStorage.getItem("data"))) {
         data.push({
             label: iterator.name,
             category: iterator.category,
         });
-        brands.push(iterator.brand);
-        categories.push(iterator.category);
+        brandsSet.add(iterator.brand);
+        categoriesSet.add(iterator.category);
     }
+    var brandsArray = [...brandsSet];
+    var categoriesArray = [...categoriesSet];
+
+    // PINTAR
+    print(JSON.parse(localStorage.getItem("data")));
+
+    function print(articles) {
+        $(".mainContent_cardContainer").empty();
+        for (var x of articles) {
+            $(`<div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="./assets/${x.img}" alt="${x.name}">
+                <div class="card-body">
+                  <h5 class="card-title">${x.name}</h5>
+                  <p class="card-text">${x.brand}</p>
+                  <p class="card-text"><a href="">${x.category}</a></p>
+                  <p class="card-p-hidden">${x.id_article}</p>
+                  <a href="#" class="btn btn-primary card-btn">Ver más</a>
+                </div>
+            </div>`).appendTo(".mainContent_cardContainer");
+        }
+    }
+
+    // FILTRO DE NOMBRE I
     $.widget("custom.catcomplete", $.ui.autocomplete, {
         _create: function () {
             this._super();
@@ -54,54 +77,70 @@ $(document).ready(function () {
             });
         }
     });
-
+    //FILTRO DE NOMBRE II
     $("#search").catcomplete({
         delay: 0,
         source: data,
+        select: function (event, ui) {
+            applyFilters();
+        },
+        response: function (event, ui) {
+            applyFilters();
+        }
     });
 
     //FILTRO DE MARCA
     $("#tags").autocomplete({
-        source: brands,
+        source: brandsArray,
+        select: function (event, ui) {
+            applyFilters();
+        },
+        response: function (event, ui) {
+            applyFilters();
+        }
+    });
+
+    //SELECTOR DE CATEGORIA
+    var selectElement = $("#mainContent_left_categories_select");
+    selectElement.empty();
+    categoriesArray.forEach(function (category) {
+        var optionElement = $("<option></option>").attr("value", category).text(category);
+        selectElement.append(optionElement);
+    });
+    $("#mainContent_left_categories_select").change(function () {
+        applyFilters();
     });
 
     //FILTRO DE PRECIOS
     $("#slider-range").slider({
         range: true,
         min: 0,
-        max: 500,
-        values: [75, 300],
+        max: 200,
+        values: [50, 100],
         slide: function (event, ui) {
-            $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+            applyFilters();
         }
     });
+
     $("#amount").val("$" + $("#slider-range").slider("values", 0) +
         " - $" + $("#slider-range").slider("values", 1));
 
-    //FILTRO DE CATEGORIA
-    $("#tags").autocomplete({
-        source: categories
-    });
+    // Aplica todos los filtros y muestra los resultados
+    function applyFilters() {
+        var searchString = $("#search").val().toLowerCase();
+        var selectedBrand = $("#tags").val().toLowerCase();
+        var selectedCategory = $("#mainContent_left_categories_select").val().toLowerCase();
+        var minPrice = $("#slider-range").slider("values", 0);
+        var maxPrice = $("#slider-range").slider("values", 1);
 
+        var filteredArticles = allProducts.filter(function (article) {
+            var nameMatch = article.name.toLowerCase().includes(searchString);
+            var brandMatch = selectedBrand === "" || article.brand.toLowerCase().includes(selectedBrand);
+            var categoryMatch = selectedCategory === "" || article.category.toLowerCase() === selectedCategory;
+            var priceMatch = parseFloat(article.price) >= minPrice && parseFloat(article.price) <= maxPrice;
+            return nameMatch && brandMatch && categoryMatch && priceMatch;
+        });
 
-    //LOS PINTA
-    print(JSON.parse(localStorage.getItem("data")));
-
-    function print(articles) {
-        $(".mainContent_cardContainer").empty();
-        for (var x of articles) {
-
-            $(`<div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="./assets/${x.img}" alt="${x.name}">
-                <div class="card-body">
-                  <h5 class="card-title">${x.name}</h5>
-                  <p class="card-text">${x.brand}</p>
-                  <p class="card-text"><a href="">${x.category}</a></p>
-                  <p class="card-p-hidden">${x.id_article}</p>
-                  <a href="#" class="btn btn-primary card-btn">Ver más</a>
-                </div>
-            </div>
-            `).appendTo(".mainContent_cardContainer");
-        }
+        print(filteredArticles);
     }
 });
