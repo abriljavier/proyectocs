@@ -22,6 +22,9 @@
     <link rel="stylesheet" href="./css/colors.css">
     <link rel="stylesheet" href="./css/admin.css">
     <script src="./js/header.js"></script>
+    <script src="./js/CRUD/users.js"></script>
+    <script src="./js/CRUD/articles.js"></script>
+    <script src="./js/CRUD/categories.js"></script>
     <script src="./js/admin.js"></script>
     <script>
         $(document).ready(function () {
@@ -43,9 +46,9 @@
                 <button id="usersTable">Tabla de Usuarios</button>
             </div>
         </div>
+        <h4 id="helper"></h4>
         <div class="mainContentAdmin_container">
-            <div class="mainContentAdmin_container_top">
-                <h4 id="helper"></h4>
+            <div class="mainContentAdmin_container_left">
                 <form id="articleForm">
                     <div>
                         <label for="name">Nombre:</label>
@@ -93,7 +96,6 @@
                     <input type="hidden" name="id" id="hiddenIdCategoryInput">
                     <br>
                     <input type="submit" id="createCategoryInput" value="Submit">
-                    <p id="categoryInputHelper"></p>
                 </form>
                 <form id="userForm">
                     <div>

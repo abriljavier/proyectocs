@@ -1,46 +1,81 @@
 <?php
-include("./includes/conexion.php");
-$conexion->set_charset('utf8');
 
-// MANEJAR LAS PETICIONES DE USUARIOS
+require("includes/CRUDArticles.php");
+
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 switch ($action) {
     case 'create':
-        $data = $_GET['data'];
-        if ($sql = $conexion->query("INSERT INTO articles (id_article, name, brand, price, stock, description, details, img, id_category) VALUES (NULL, '$data[0]', '$data[1]', '$data[2]', '$data[3]', '$data[4]', '$data[5]', '$data[6]', '$data[7]')")) {
-            echo "success";
-        } else {
-            echo "error";
-        }
+        echo createArticles();
+        break;
+    case 'update':
+        echo updateArticles();
         break;
     case 'read':
-        $sql = $conexion->query("SELECT * FROM articles JOIN categories ON categories.id_category=articles.id_category ORDER BY id_article");
-        $jsonData = array();
-        while ($row = mysqli_fetch_assoc($sql)) {
-            $jsonData[] = $row;
-        }
-        echo json_encode($jsonData);
-        include("./includes/conexion.php");
-        $conexion->set_charset('utf8');
+        echo readArticles();
         break;
     case 'delete':
-        $id = $_GET['id'];
-        if ($sql = $conexion->query("DELETE FROM articles WHERE id_article = '$id'")) {
-            echo "borrado ok";
-        } else {
-            echo "error";
-        }
-    case 'update':
-        $data = $_GET['data'];
-        if ($sql = $conexion->query("UPDATE articles SET name='$data[1]', brand='$data[2]', price='$data[3]', stock='$data[4]', description='$data[5]', details='$data[6]', img='$data[7]', id_category='$data[8]' WHERE id_article=$data[0];")) {
-            echo "success";
-        } else {
-            echo "error";
-        }
-        break;
-
-    default:
+        echo deleteArticles();
         break;
 }
 
-$conexion->close();
+function createArticles()
+{
+    $name = $_GET['data'][0];
+    $brand = $_GET['data'][1];
+    $price = $_GET['data'][2];
+    $stock = $_GET['data'][3];
+    $description = $_GET['data'][4];
+    $details = $_GET['data'][5];
+    $img = $_GET['data'][6];
+    $id_category = $_GET['data'][7];
+    $data = array($name, $brand, $price, $stock, $description, $details, $img, $id_category);
+    $dataBase = new Articles();
+    $result = $dataBase->create($data);
+    if ($result === true) {
+        echo true;
+    } else {
+        echo $result;
+    }
+}
+
+function updateArticles()
+{
+    $id_article = $_GET['data'][0];
+    $name = $_GET['data'][1];
+    $brand = $_GET['data'][2];
+    $price = $_GET['data'][3];
+    $stock = $_GET['data'][4];
+    $description = $_GET['data'][5];
+    $details = $_GET['data'][6];
+    $img = $_GET['data'][7];
+    $id_category = $_GET['data'][8];
+    $data = array($id_article, $name, $brand, $price, $stock, $description, $details, $img, $id_category);
+    $dataBase = new Articles();
+    $result = $dataBase->update($data);
+    if ($result === true) {
+        echo true;
+    } else {
+        echo $result;
+    }
+}
+
+function readArticles()
+{
+    $dataBase = new Articles();
+    $result = $dataBase->read();
+
+    if ($result === "No hay categorias") {
+        echo $result;
+    } else {
+        $articlesData = json_decode($result, true);
+        echo json_encode($articlesData);
+    }
+}
+
+function deleteArticles()
+{
+    $id_article = $_GET['id'];
+    $dataBase = new Articles();
+    $result = $dataBase->delete([$id_article]);
+    echo $result;
+}

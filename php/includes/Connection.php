@@ -4,7 +4,7 @@ class Connection
 	private $server = "localhost";
 	private $user = "root";
 	private $password = "";
-	private $db = "proyectocs";
+	private $db = "ja_proyectocs";
 	public function getConnection()
 	{
 		return $conexion = new mysqli(

@@ -31,15 +31,18 @@
 
     .mainContentAdmin_container {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
         justify-content: center;
         min-height: 20em;
 
-        .mainContentAdmin_container_top {
-            width: 100%;
+        .mainContentAdmin_container_left {
+            width: 20%;
             min-height: 15em;
-            border-bottom: 2px solid var(--c-terciary);
+            border-right: 2px solid var(--c-terciary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
 
             form {
                 margin: 1em 0em;
@@ -49,7 +52,10 @@
         }
 
         .mainContentAdmin_container_table {
+            width: 80%;
             padding: 1em;
+            max-height: 50em;
+            overflow-y: scroll;
         }
     }
 }
@@ -59,4 +65,9 @@
 #passwordHelp,
 #emailHelp {
     color: red;
+}
+
+#helper,
+h1 {
+    margin: 0px auto;
 }

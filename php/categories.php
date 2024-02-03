@@ -7,18 +7,21 @@ switch ($action) {
     case 'create':
         echo createCategories();
         break;
+    case 'update':
+        echo updateCategories();
+        break;
     case 'read':
         echo readCategories();
         break;
     case 'delete':
-        deleteCategories();
+        echo deleteCategories();
         break;
 }
 
 function createCategories()
 {
-    $newCategory = $_GET["newCategory"];
-    $data = array($newCategory);
+    $categoryName = $_GET["categoryName"][0];
+    $data = array($categoryName);
     $dataBase = new Categories();
     $result = $dataBase->create($data);
     if ($result === true) {
@@ -28,18 +31,18 @@ function createCategories()
     }
 }
 
-// function updateCategories($data)
-// {
-//     $id_user = $_POST['id_user'];
-//     $data = array($id_user, $username, $password, $email, $rol);
-//     $dataBase = new Users();
-//     $result = $dataBase->update($data);
-//     if ($result === true) {
-//         echo true;
-//     } else {
-//         echo $result;
-//     }
-// }
+function updateCategories()
+{
+    $categorieData = $_GET['data'];
+    // $data = array($id_user, $username, $password, $email, $rol);
+    $dataBase = new Categories();
+    $result = $dataBase->update($categorieData);
+    if ($result === true) {
+        echo true;
+    } else {
+        echo $result;
+    }
+}
 
 function readCategories()
 {

@@ -21,6 +21,7 @@ $(document).ready(function () {
                 action: "login",
             },
             success: function (res) {
+                console.log(res);
                 if (res == "Credenciales incorrectas") {
                     $(loginHelp).css({ "color": "red" });
                     $(loginHelp).text("Nombre de usuario o contraseña incorrectos");
