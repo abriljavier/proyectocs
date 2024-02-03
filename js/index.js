@@ -9,7 +9,6 @@ $(document).ready(function () {
                 action: "read",
             },
             success: function (resultado) {
-                console.log(resultado);
                 var articles = jQuery.parseJSON(resultado);
                 localStorage.setItem("data", JSON.stringify(articles));
 
@@ -20,7 +19,6 @@ $(document).ready(function () {
             },
         });
     }
-
     var allProducts = JSON.parse(localStorage.getItem("data"));
     var data = []
     var brandsSet = new Set();
@@ -35,7 +33,6 @@ $(document).ready(function () {
     }
     var brandsArray = [...brandsSet];
     var categoriesArray = [...categoriesSet];
-
     // PINTAR
     print(JSON.parse(localStorage.getItem("data")));
 
@@ -48,10 +45,12 @@ $(document).ready(function () {
                   <h5 class="card-title">${x.name}</h5>
                   <p class="card-text">${x.brand}</p>
                   <p class="card-text"><a href="">${x.category}</a></p>
+                  <p class="card-text">${x.price} €</p>
                   <p class="card-p-hidden">${x.id_article}</p>
                   <a href="#" class="btn btn-primary card-btn">Ver más</a>
                 </div>
-            </div>`).appendTo(".mainContent_cardContainer");
+            </div>
+            `).appendTo(".mainContent_cardContainer");
         }
     }
 
@@ -82,10 +81,18 @@ $(document).ready(function () {
         delay: 0,
         source: data,
         select: function (event, ui) {
-            applyFilters();
+            var searchString = ui.item.value.toLowerCase();
+            var filteredArticles = allProducts.filter(function (article) {
+                return article.name.toLowerCase().includes(searchString);
+            });
+            print(filteredArticles);
         },
         response: function (event, ui) {
-            applyFilters();
+            var searchString = $("#search").val().toLowerCase();
+            var filteredArticles = allProducts.filter(function (article) {
+                return article.name.toLowerCase().includes(searchString);
+            });
+            print(filteredArticles);
         }
     });
 
@@ -93,10 +100,18 @@ $(document).ready(function () {
     $("#tags").autocomplete({
         source: brandsArray,
         select: function (event, ui) {
-            applyFilters();
+            var searchString = ui.item.value.toLowerCase();
+            var filteredArticles = allProducts.filter(function (article) {
+                return article.brand.toLowerCase().includes(searchString);
+            });
+            print(filteredArticles);
         },
         response: function (event, ui) {
-            applyFilters();
+            var searchString = $("#search").val().toLowerCase();
+            var filteredArticles = allProducts.filter(function (article) {
+                return article.brand.toLowerCase().includes(searchString);
+            });
+            print(filteredArticles);
         }
     });
 
@@ -108,7 +123,11 @@ $(document).ready(function () {
         selectElement.append(optionElement);
     });
     $("#mainContent_left_categories_select").change(function () {
-        applyFilters();
+        var selectedCategory = $(this).val();
+        var filteredArticles = allProducts.filter(function (article) {
+            return article.category.toLowerCase() === selectedCategory.toLowerCase();
+        });
+        print(filteredArticles);
     });
 
     //FILTRO DE PRECIOS
@@ -118,29 +137,174 @@ $(document).ready(function () {
         max: 200,
         values: [50, 100],
         slide: function (event, ui) {
-            applyFilters();
+            var minPrice = ui.values[0];
+            var maxPrice = ui.values[1];
+            $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+            var filteredArticles = allProducts.filter(function (article) {
+                var articlePrice = parseFloat(article.price);
+                return articlePrice >= minPrice && articlePrice <= maxPrice;
+            });
+            print(filteredArticles);
         }
     });
-
     $("#amount").val("$" + $("#slider-range").slider("values", 0) +
         " - $" + $("#slider-range").slider("values", 1));
 
-    // Aplica todos los filtros y muestra los resultados
-    function applyFilters() {
-        var searchString = $("#search").val().toLowerCase();
-        var selectedBrand = $("#tags").val().toLowerCase();
-        var selectedCategory = $("#mainContent_left_categories_select").val().toLowerCase();
-        var minPrice = $("#slider-range").slider("values", 0);
-        var maxPrice = $("#slider-range").slider("values", 1);
-
-        var filteredArticles = allProducts.filter(function (article) {
-            var nameMatch = article.name.toLowerCase().includes(searchString);
-            var brandMatch = selectedBrand === "" || article.brand.toLowerCase().includes(selectedBrand);
-            var categoryMatch = selectedCategory === "" || article.category.toLowerCase() === selectedCategory;
-            var priceMatch = parseFloat(article.price) >= minPrice && parseFloat(article.price) <= maxPrice;
-            return nameMatch && brandMatch && categoryMatch && priceMatch;
+    // ORDENAR POR NOMBRE
+    $("#nameOrder a:eq(0)").on("click", function (event) {
+        event.preventDefault();
+        let orderedProducts = allProducts.slice();
+        orderedProducts.sort(function (a, b) {
+            const nameA = a.name.toUpperCase();
+            const nameB = b.name.toUpperCase();
+            if (nameA < nameB) {
+                return -1;
+            } else if (nameA > nameB) {
+                return 1;
+            } else {
+                return 0;
+            }
         });
+        print(orderedProducts)
+    })
+    $("#nameOrder a:eq(1)").on("click", function (event) {
+        event.preventDefault();
+        let orderedProducts = allProducts.slice();
+        orderedProducts.sort(function (a, b) {
+            const nameA = a.name.toUpperCase();
+            const nameB = b.name.toUpperCase();
+            if (nameA > nameB) {
+                return -1;
+            } else if (nameA < nameB) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+        print(orderedProducts)
+    })
+    // ORDENAR POR MARCA
+    $("#brandOrder a:eq(0)").on("click", function (event) {
+        event.preventDefault();
+        let orderedProducts = allProducts.slice();
+        orderedProducts.sort(function (a, b) {
+            const brandA = a.brand.toUpperCase();
+            const brandB = b.brand.toUpperCase();
+            if (brandA < brandB) {
+                return -1;
+            } else if (brandA > brandB) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+        print(orderedProducts)
+    })
+    $("#brandOrder a:eq(1)").on("click", function (event) {
+        event.preventDefault();
+        let orderedProducts = allProducts.slice();
+        orderedProducts.sort(function (a, b) {
+            const brandA = a.brand.toUpperCase();
+            const brandB = b.brand.toUpperCase();
+            if (brandA > brandB) {
+                return -1;
+            } else if (brandA < brandB) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+        print(orderedProducts)
+    })
+    // ORDENAR POR CATEGORIA
+    $("#catOrder a:eq(0)").on("click", function (event) {
+        event.preventDefault();
+        let orderedProducts = allProducts.slice();
+        orderedProducts.sort(function (a, b) {
+            const catA = a.category.toUpperCase();
+            const catB = b.category.toUpperCase();
+            if (catA < catB) {
+                return -1;
+            } else if (catA > catB) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+        print(orderedProducts)
+    })
+    $("#catOrder a:eq(1)").on("click", function (event) {
+        event.preventDefault();
+        let orderedProducts = allProducts.slice();
+        orderedProducts.sort(function (a, b) {
+            const catA = a.category.toUpperCase();
+            const catB = b.category.toUpperCase();
+            if (catA > catB) {
+                return -1;
+            } else if (catA < catB) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+        print(orderedProducts)
+    })
+    $("#priceOrder a:eq(0)").on("click", function (event) {
+        event.preventDefault();
+        let orderedProducts = allProducts.slice();
+        orderedProducts.sort(function (a, b) {
+            const priceA = parseFloat(a.price);
+            const priceB = parseFloat(b.price);
+            return priceA - priceB;
+        });
+        print(orderedProducts);
+    });
 
-        print(filteredArticles);
+    $("#priceOrder a:eq(1)").on("click", function (event) {
+        event.preventDefault();
+        let orderedProducts = allProducts.slice();
+        orderedProducts.sort(function (a, b) {
+            const priceA = parseFloat(a.price);
+            const priceB = parseFloat(b.price);
+            return priceB - priceA;
+        });
+        print(orderedProducts);
+    });
+
+    // Variables de paginación
+    var itemsPerPage = 3;
+    var currentPage = 1;
+    var totalPages = Math.ceil(allProducts.length / itemsPerPage);
+
+    // Función para imprimir los artículos de la página actual
+    function printCurrentPage() {
+        var startIndex = (currentPage - 1) * itemsPerPage;
+        var endIndex = startIndex + itemsPerPage;
+        var currentArticles = allProducts.slice(startIndex, endIndex);
+        print(currentArticles);
     }
+
+    // Función para actualizar los controles de paginación
+    function updatePagination() {
+        $(".pagination").empty();
+        for (var i = 1; i <= totalPages; i++) {
+            var link = $("<a>").text(i).attr("href", "#").addClass("page-link");
+            if (i === currentPage) {
+                link.addClass("active");
+            }
+            $(".pagination").append($("<span>").append(link));
+        }
+    }
+
+    // Inicialización
+    printCurrentPage();
+    updatePagination();
+
+    // Manejador de eventos para cambiar de página
+    $(".pagination").on("click", ".page-link", function (event) {
+        event.preventDefault();
+        currentPage = parseInt($(this).text());
+        printCurrentPage();
+        updatePagination();
+    });
 });

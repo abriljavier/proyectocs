@@ -9,7 +9,7 @@
     display: flex;
     flex-direction: column;
 
-    * {
+    div {
         margin: 1em;
     }
 
@@ -17,6 +17,14 @@
         font-size: 1.5em;
         text-align: center;
         border-bottom: 2px solid var(--c-second);
+    }
+
+    .mainContent_left_orders p {
+        font-weight: bold;
+
+        a {
+            font-weight: 500;
+        }
     }
 
 }
@@ -27,15 +35,15 @@
     background-color: var(--c-background);
     min-width: 80%;
 
-
-    .mainContent_section1 {
-        border: 2px solid red;
-        min-height: 25em;
-        margin-bottom: 5em;
-    }
-
     h2 {
         margin: 0px auto;
+    }
+
+    div.pagination {
+        padding-bottom: 2em;
+        padding-right: 2em;
+        display: flex;
+        justify-content: flex-end;
     }
 
     .mainContent_cardContainer {
@@ -47,6 +55,7 @@
         .card {
             margin: 2em;
             padding: 0.5em;
+            min-height: 40em;
 
             .card-btn {
                 background-color: var(--c-second);
