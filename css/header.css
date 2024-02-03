@@ -1,6 +1,5 @@
 .header {
     background-color: var(--c-first);
-    max-width: 100%;
     display: flex;
     border-bottom: 2px solid var(--c-second);
     justify-content: space-around;
@@ -24,9 +23,14 @@
 
         button {
             width: 100%;
-            height: 3em;
+            height: 4em;
+            margin-right: 1em;
             background-color: var(--c-second);
             color: var(--c-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
     }
 

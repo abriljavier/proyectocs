@@ -1,3 +1,7 @@
+.header {
+    width: 100%;
+}
+
 .mainContent_login {
     display: flex;
     flex-direction: column;

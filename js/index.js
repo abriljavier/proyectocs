@@ -272,7 +272,7 @@ $(document).ready(function () {
     });
 
     // Variables de paginación
-    var itemsPerPage = 3;
+    var itemsPerPage = 4;
     var currentPage = 1;
     var totalPages = Math.ceil(allProducts.length / itemsPerPage);
 

@@ -1,69 +1,73 @@
-    .mainContent {
-        background-color: var(--c-background);
+.header {
+    width: 100%;
+}
+
+.mainContent {
+    background-color: var(--c-background);
+    display: flex;
+    flex-direction: column;
+
+    .mainContent_top {
+        height: 20%;
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-bottom: 2px solid var(--c-terciary);
+        padding: 2em 0em;
+    }
 
-        .mainContent_top {
-            height: 20%;
+    .mainContent_container {
+        display: flex;
+        height: 80%;
+
+        .mainContent_container_left {
+            width: 30%;
+            border-right: 2px solid var(--c-terciary);
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            min-height: 50em;
             align-items: center;
-            border-bottom: 2px solid var(--c-terciary);
-            padding: 2em 0em;
-        }
 
-        .mainContent_container {
-            display: flex;
-            height: 80%;
+            img {
+                margin-top: 2em;
+            }
 
-            .mainContent_container_left {
-                width: 30%;
-                border-right: 2px solid var(--c-terciary);
+            h4 {
+                text-align: center;
+                margin: 1em 0em;
+            }
+
+            h5 {
+                margin-bottom: 2em;
+            }
+
+            form {
                 display: flex;
                 flex-direction: column;
-                min-height: 50em;
-                align-items: center;
 
-                img {
+                input {
+                    width: 100%;
+                    margin: 0.5em;
+                }
+
+                label {
+                    font-weight: bold;
+                }
+
+                button {
                     margin-top: 2em;
+                    border-radius: 2%;
+                    width: 100%;
                 }
-
-                h4 {
-                    text-align: center;
-                    margin: 1em 0em;
-                }
-
-                h5 {
-                    margin-bottom: 2em;
-                }
-
-                form {
-                    display: flex;
-                    flex-direction: column;
-
-                    input {
-                        width: 100%;
-                        margin: 0.5em;
-                    }
-
-                    label {
-                        font-weight: bold;
-                    }
-
-                    button {
-                        margin-top: 2em;
-                        border-radius: 2%;
-                        width: 100%;
-                    }
-                }
-
-
             }
 
-            .mainContent_container_table {
-                width: 70%;
-                padding: 1em;
-            }
+
+        }
+
+        .mainContent_container_table {
+            width: 70%;
+            padding: 1em;
         }
     }
+}

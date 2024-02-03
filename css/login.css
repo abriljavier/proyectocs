@@ -1,4 +1,8 @@
-.mainContent_login{
+.header {
+    width: 100%;
+}
+
+.mainContent_login {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -6,12 +10,12 @@
     min-height: 50em;
     background-color: var(--c-background);
 
-    h2{
+    h2 {
         text-align: center;
         padding-bottom: 1em;
     }
 
-    .mainContent_login_links{
+    .mainContent_login_links {
         width: 33em;
         margin-top: 1em;
         display: flex;
