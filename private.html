@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"
+        integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="./css/colors.css">
+    <script src="./js/header.js"></script>
+    <link rel="stylesheet" href="./css/private.css">
+    <script src="./js/private.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.header').load("./templates/header.html");
+            $('.footer').load("./templates/footer.html");
+        });
+    </script>
+</head>
+
+<body>
+    <div class="header"></div>
+    <div class="mainContent">
+        <div class="mainContent_top">
+            <h1>Bienvenido a su perfil de usuario</h1>
+            <h2>Aquí puede visualizar sus pedidos y modificar su perfil</h2>
+        </div>
+        <div class="mainContent_container">
+            <div class="mainContent_container_left">
+                <img id="avatarImg" src="./assets/no-avatar.png" alt="">
+                <h4>Mis datos</h4>
+                <h5>@user</h5>
+                <form>
+                    <label for="username">Nombre de usuario</label>
+                    <input type="text" name="username" id="username" value="valor" readonly>
+                    <label for="password">Contraseña</label>
+                    <input type="password" name="password" id="password" value="valor" readonly>
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" value="valor" readonly>
+                    <button id="updateUserDataBtn" disabled>Modificar Contraseña</button>
+                    <button id="updateAvatarDataBtn" disabled>Modificar Avatar</button>
+                </form>
+            </div>
+            <div class="mainContent_container_table">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Compra</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row"></th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"></th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"></th>
+                            <td>Larry</td>
+                            <td>the Bird</td>
+                            <td>@twitter</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="footer"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

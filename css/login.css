@@ -1,0 +1,21 @@
+.mainContent_login{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 50em;
+    background-color: var(--c-background);
+
+    h2{
+        text-align: center;
+        padding-bottom: 1em;
+    }
+
+    .mainContent_login_links{
+        width: 33em;
+        margin-top: 1em;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+}

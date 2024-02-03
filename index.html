@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <link rel="stylesheet" href="./css/colors.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <script src="./js/header.js"></script>
+    <script src="./js/index.js"></script>
+    <script src="./js/details.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.header').load("./templates/header.html");
+            $('.footer').load("./templates/footer.html");
+        });
+    </script>
+</head>
+
+<body>
+    <div class="header"></div>
+    <div class="mainContent">
+        <div class="mainContent_left">
+            <div class="mainContent_left_title">SELECCIONA TU JUEGO PREFERIDO!</div>
+            <div class="mainContent_left_filtername">Filtrar por nombre
+                <input id="search">
+            </div>
+            <div class="mainContent_left_filterbrand">Filtrar por marca
+                <label for="tags">Tags: </label>
+                <input id="tags">
+            </div>
+            <div class="mainContent_left_filterprice">Filtrar por precio
+                <p>
+                    <label for="amount">Price range:</label>
+                    <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                </p>
+
+                <div id="slider-range"></div>
+            </div>
+            <div class="mainContent_left_categories">Filtrar por categoria
+                <label for="tags">Tags: </label>
+                <input id="tags">
+            </div>
+        </div>
+        <div class="mainContent_right">
+            <div class="mainContent_section1">
+            </div>
+            <h2>Toda nuestra colección de juegos</h2>
+            <div class="mainContent_cardContainer">
+            </div>
+        </div>
+    </div>
+    <div class="footer"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

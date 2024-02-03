@@ -1,0 +1,69 @@
+.mainContent {
+    display: flex;
+}
+
+
+.mainContent_left {
+    min-width: 15em;
+    background-color: var(--c-background);
+    display: flex;
+    flex-direction: column;
+
+    * {
+        margin: 1em;
+    }
+
+    .mainContent_left_title {
+        font-size: 1.5em;
+        text-align: center;
+        border-bottom: 2px solid var(--c-second);
+    }
+
+}
+
+.mainContent_right {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--c-background);
+
+
+    .mainContent_section1 {
+        border: 2px solid red;
+        min-height: 25em;
+        margin-bottom: 5em;
+    }
+
+    h2 {
+        margin: 0px auto;
+    }
+
+    .mainContent_cardContainer {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+
+        .card {
+            margin: 2em;
+            padding: 0.5em;
+
+            .card-btn {
+                background-color: var(--c-second);
+                border: 1px solid var(--c-second);
+                color: var(--c-dark);
+            }
+
+            .card-p-hidden {
+                display: none;
+            }
+        }
+    }
+}
+
+/* JQUERYUI STUFF */
+.ui-autocomplete-category {
+    font-weight: bold;
+    padding: .2em .4em;
+    margin: .8em 0 .2em;
+    line-height: 1.5;
+}

@@ -1,0 +1,62 @@
+.mainContentAdmin {
+    background-color: var(--c-background);
+    display: flex;
+    flex-direction: column;
+
+    .mainContentAdmin_top {
+        height: 20%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-bottom: 2px solid var(--c-terciary);
+        padding: 2em 0em;
+
+        .mainContentAdmin_top_buttonContainer {
+            padding-top: 1em;
+            width: 50em;
+            display: flex;
+            justify-content: space-evenly;
+
+            button {
+                width: 10em;
+                height: 4em;
+                background-color: var(--c-first);
+                color: var(--c-second);
+                border-radius: 4%;
+                border: 1px solid var(--c-terciary);
+            }
+        }
+    }
+
+    .mainContentAdmin_container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 20em;
+
+        .mainContentAdmin_container_top {
+            width: 100%;
+            min-height: 15em;
+            border-bottom: 2px solid var(--c-terciary);
+
+            form {
+                margin: 1em 0em;
+                display: none;
+                width: 10em;
+            }
+        }
+
+        .mainContentAdmin_container_table {
+            padding: 1em;
+        }
+    }
+}
+
+#helper,
+#usernameHelp,
+#passwordHelp,
+#emailHelp {
+    color: red;
+}
