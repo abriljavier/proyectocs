@@ -46,6 +46,7 @@
     }
 
     div.pagination {
+        margin-top: 3em;
         padding-bottom: 2em;
         padding-right: 2em;
         display: flex;
@@ -61,7 +62,8 @@
         .card {
             margin: 2em;
             padding: 0.5em;
-            min-height: 40em;
+            min-height: 30em;
+            min-width: 20em;
 
             .card-btn {
                 background-color: var(--c-second);
@@ -84,8 +86,16 @@
     line-height: 1.5;
 }
 
-/* .ui-slider-range .ui-corner-all .ui-widget-header {
-    left: -5.4%;
-    width: 100%;
 
-} */
+#dialog {
+    display: none;
+
+    .dialog-content {}
+}
+
+.ui-dialog-titlebar {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+}

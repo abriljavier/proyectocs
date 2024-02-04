@@ -47,7 +47,7 @@ $(document).ready(function () {
                   <p class="card-text"><a href="">${x.category}</a></p>
                   <p class="card-text">${x.price} €</p>
                   <p class="card-p-hidden">${x.id_article}</p>
-                  <a href="#" class="btn btn-primary card-btn">Ver más</a>
+                  <a href="#" id="detailsBtn" class="btn btn-primary card-btn">Ver más</a>
                 </div>
             </div>
             `).appendTo(".mainContent_cardContainer");
@@ -272,7 +272,7 @@ $(document).ready(function () {
     });
 
     // Variables de paginación
-    var itemsPerPage = 4;
+    var itemsPerPage = 3;
     var currentPage = 1;
     var totalPages = Math.ceil(allProducts.length / itemsPerPage);
 
@@ -306,5 +306,39 @@ $(document).ready(function () {
         currentPage = parseInt($(this).text());
         printCurrentPage();
         updatePagination();
+    });
+
+    // EL DIALOGO DE VER MÁS
+    $(document).on("click", "#detailsBtn", function (event) {
+        event.preventDefault();
+        let cardId = $(this).siblings(".card-p-hidden").text();
+        let cardInfo = JSON.parse(localStorage.getItem("data")).find(item => item.id_article === cardId);
+        let dialogContent = $("<div>").addClass("dialog-content");
+        let name = $("<h1>").addClass("dialog-title").text(cardInfo.name);
+        let brand = $("<h3>").addClass("dialog-subtitle").text("Marca: " + cardInfo.brand);
+        let price = $("<h4>").addClass("dialog-price").text("Precio: " + cardInfo.price + " €");
+        let stock = $("<h4>").addClass("dialog-stock").text("Stock Actual: " + cardInfo.stock);
+        let description = $("<p>").addClass("dialog-description").text("Descripción: " + cardInfo.description);
+        let details = $("<p>").addClass("dialog-details").text("Detalles: " + cardInfo.details);
+        let img = $("<img>").addClass("dialog-image").attr("src", "./assets/" + cardInfo.img);
+        let category = $("<p>").addClass("dialog-category").text("Categoria: " + cardInfo.category);
+        dialogContent.append(name, brand, category, price, stock, description, details, img);
+        $("#dialog").html(dialogContent);
+        $("#dialog").dialog({
+            resizable: false,
+            height: "auto",
+            width: 1366,
+            height: 800,
+            modal: true,
+            draggable: false,
+            buttons: {
+                "Añadir al carro": function () {
+                    $(this).dialog("close");
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
     });
 });
