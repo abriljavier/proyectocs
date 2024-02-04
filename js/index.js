@@ -314,16 +314,25 @@ $(document).ready(function () {
         let cardId = $(this).siblings(".card-p-hidden").text();
         let cardInfo = JSON.parse(localStorage.getItem("data")).find(item => item.id_article === cardId);
         let dialogContent = $("<div>").addClass("dialog-content");
-        let name = $("<h1>").addClass("dialog-title").text(cardInfo.name);
+        let title = $("<h2>").addClass("dialog-content-title").text("Artículo: " + cardInfo.name);
+        let container = $("<div>").addClass("dialog-content-container");
+        let img = $("<img>").addClass("dialog-content-image").attr("src", "./assets/" + cardInfo.img).attr("alt", "Product Image");
+        let info = $("<div>").addClass("dialog-content-info");
         let brand = $("<h3>").addClass("dialog-subtitle").text("Marca: " + cardInfo.brand);
-        let price = $("<h4>").addClass("dialog-price").text("Precio: " + cardInfo.price + " €");
-        let stock = $("<h4>").addClass("dialog-stock").text("Stock Actual: " + cardInfo.stock);
-        let description = $("<p>").addClass("dialog-description").text("Descripción: " + cardInfo.description);
-        let details = $("<p>").addClass("dialog-details").text("Detalles: " + cardInfo.details);
-        let img = $("<img>").addClass("dialog-image").attr("src", "./assets/" + cardInfo.img);
-        let category = $("<p>").addClass("dialog-category").text("Categoria: " + cardInfo.category);
-        dialogContent.append(name, brand, category, price, stock, description, details, img);
-        $("#dialog").html(dialogContent);
+        let data = $("<div>").addClass("dialog-content-data");
+        let description = $("<p>").addClass("dialog-description").text(cardInfo.description);
+        let ul = $("<ul>").addClass("dialog-content-data-ul");
+        let price = $("<li>").addClass("dialog-price").text("Precio: " + cardInfo.price + " €");
+        let stock = $("<li>").addClass("dialog-stock").text("Stock: " + cardInfo.stock);
+        let category = $("<li>").addClass("dialog-category").text("Category: " + cardInfo.category);
+
+        ul.append(price, stock, category);
+        data.append(description, ul);
+        info.append(brand, data);
+        container.append(img, info);
+        dialogContent.append(title, container);
+
+        $("#dialog").empty().append(dialogContent);
         $("#dialog").dialog({
             resizable: false,
             height: "auto",
@@ -341,4 +350,5 @@ $(document).ready(function () {
             }
         });
     });
+
 });
