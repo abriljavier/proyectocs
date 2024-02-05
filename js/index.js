@@ -5,6 +5,7 @@ $(document).ready(function () {
     var brandsArray = [];
     var categoriesArray = [];
     var data = [];
+    var firstTime = true;
 
     //CARGA LOS DATOS DE LOS ARTÍCULOS
     $.ajax({
@@ -31,6 +32,7 @@ $(document).ready(function () {
             categoriesArray = [...categoriesSet];
             print(allProducts);
             loadFiltersAndOrders();
+            paging();
 
         },
         error: function (xhr) {
@@ -55,7 +57,6 @@ $(document).ready(function () {
             </div>
             `).appendTo(".mainContent_cardContainer");
         }
-
     }
 
     function loadFiltersAndOrders() {
@@ -202,13 +203,13 @@ $(document).ready(function () {
                     return articlePrice >= minPrice && articlePrice <= maxPrice;
                 });
             }
-            print(filteredArticles);
+            paging();
         }
 
         // FUNCIÓN PARA ORDENAR
         function sortArticlesBy(property, order, isPrice) {
-            var orderedArticles = filteredArticles.slice();
-            orderedArticles.sort(function (a, b) {
+            // var orderedArticles = filteredArticles.slice();
+            filteredArticles.sort(function (a, b) {
                 if (!isPrice) {
                     var valueA = a[property].toUpperCase();
                     var valueB = b[property].toUpperCase();
@@ -228,47 +229,60 @@ $(document).ready(function () {
                 }
 
             });
-            print(orderedArticles);
+            paging();
         }
 
     }
 
-    // // Variables de paginación
-    // var itemsPerPage = 3;
-    // var currentPage = 1;
-    // var totalPages = Math.ceil(allProducts.length / itemsPerPage);
+    function paging() {
+        // Variables de paginación
+        var itemsPerPage = 3;
+        var currentPage = 1;
+        var totalPages = Math.ceil(filteredArticles.length / itemsPerPage);
 
-    // // Función para imprimir los artículos de la página actual
-    // function printCurrentPage() {
-    //     var startIndex = (currentPage - 1) * itemsPerPage;
-    //     var endIndex = startIndex + itemsPerPage;
-    //     var currentArticles = allProducts.slice(startIndex, endIndex);
-    //     print(currentArticles);
-    // }
+        if (firstTime) {
+            firstTime = false;
+            function printCurrentPage() {
+                var startIndex = (currentPage - 1) * itemsPerPage;
+                var endIndex = startIndex + itemsPerPage;
+                var currentArticles = allProducts.slice(startIndex, endIndex);
+                print(currentArticles);
+            }
+        } else {
+            function printCurrentPage() {
+                var startIndex = (currentPage - 1) * itemsPerPage;
+                var endIndex = startIndex + itemsPerPage;
+                var currentArticles = filteredArticles.slice(startIndex, endIndex);
+                print(currentArticles);
+            }
+        }
 
-    // // Función para actualizar los controles de paginación
-    // function updatePagination() {
-    //     $(".pagination").empty();
-    //     for (var i = 1; i <= totalPages; i++) {
-    //         var link = $("<a>").text(i).attr("href", "#").addClass("page-link");
-    //         if (i === currentPage) {
-    //             link.addClass("active");
-    //         }
-    //         $(".pagination").append($("<span>").append(link));
-    //     }
-    // }
 
-    // // Inicialización
-    // printCurrentPage();
-    // updatePagination();
 
-    // // Manejador de eventos para cambiar de página
-    // $(".pagination").on("click", ".page-link", function (event) {
-    //     event.preventDefault();
-    //     currentPage = parseInt($(this).text());
-    //     printCurrentPage();
-    //     updatePagination();
-    // });
+        // Función para actualizar los controles de paginación
+        function updatePagination() {
+            $(".pagination").empty();
+            for (var i = 1; i <= totalPages; i++) {
+                var link = $("<a>").text(i).attr("href", "#").addClass("page-link");
+                if (i === currentPage) {
+                    link.addClass("active");
+                }
+                $(".pagination").append($("<span>").append(link));
+            }
+        }
+
+        // Inicialización
+        printCurrentPage();
+        updatePagination();
+
+        // Manejador de eventos para cambiar de página
+        $(".pagination").on("click", ".page-link", function (event) {
+            event.preventDefault();
+            currentPage = parseInt($(this).text());
+            printCurrentPage();
+            updatePagination();
+        });
+    }
 
     // EL DIALOGO DE VER MÁS
     $(document).on("click", "#detailsBtn", function (event) {
@@ -313,4 +327,12 @@ $(document).ready(function () {
         });
     });
 
+    //EL BOTÓN DE BORRAR FILTROS
+    $(document).on("click", "#deleteFiltersButton", function () {
+        firstTime = true;
+        $("#search").val("");
+        $("#tags").val("");
+        filteredArticles = allProducts.slice();
+        paging();
+    })
 });
