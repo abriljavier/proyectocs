@@ -64,7 +64,7 @@ function readArticles()
     $dataBase = new Articles();
     $result = $dataBase->read();
 
-    if ($result === "No hay categorias") {
+    if ($result === "No hay articulos") {
         echo $result;
     } else {
         $articlesData = json_decode($result, true);
