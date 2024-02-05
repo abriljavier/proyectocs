@@ -78,6 +78,11 @@
     }
 }
 
+.noGameH2 {
+    padding-top: 10em;
+    color: red;
+}
+
 /* JQUERYUI STUFF */
 .ui-autocomplete-category {
     font-weight: bold;

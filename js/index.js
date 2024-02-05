@@ -253,7 +253,13 @@ $(document).ready(function () {
                 var startIndex = (currentPage - 1) * itemsPerPage;
                 var endIndex = startIndex + itemsPerPage;
                 var currentArticles = filteredArticles.slice(startIndex, endIndex);
-                print(currentArticles);
+                if (currentArticles.length == 0) {
+                    console.log(currentArticles.length);
+                    $(".mainContent_cardContainer").empty();
+                    $(".mainContent_cardContainer").append("<h2 class='noGameH2'>No hay artículos con el criterio seleccionado</h2>")
+                } else {
+                    print(currentArticles);
+                }
             }
         }
 
