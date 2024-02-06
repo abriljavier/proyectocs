@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -24,53 +24,27 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 
+    <!-- Styles personalizados -->
     <link rel="stylesheet" href="./css/colors.css">
     <link rel="stylesheet" href="./css/header.css">
-    <link rel="stylesheet" href="./css/create.css">
-    <script src="./js/header.js"></script>
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/details.css">
+
+    <!-- JS -->
     <script>
         $(document).ready(function () {
             $('.header').load("./templates/header.html");
             $('.footer').load("./templates/footer.html");
-        }); 
+        });
     </script>
-    <script src="./js/create.js"></script>
+    <script defer src="./js/header.js"></script>
 
 </head>
 
 <body>
     <div class="header"></div>
-    <div class="mainContent_login">
-        <h2>Rellena este formulario para crear un usuario</h2>
-        <div class="mainContent_form">
-            <form>
-                <div class="mb-3">
-                    <label for="usernameInput" class="form-label">Nombre de usuario</label>
-                    <input type="text" class="form-control" id="usernameInput" aria-describedby="emailHelp">
-                </div>
-                <div id="usernameHelp" class="form-text"></div>
-                <div class="mb-3">
-                    <label for="emailInput" class="form-label">Correo electrónico</label>
-                    <input type="email" class="form-control" id="emailInput">
-                </div>
-                <div id="emailHelp" class="form-text"></div>
-                <div class="mb-3">
-                    <label for="passwordInput" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="passwordInput">
-                </div>
-                <div id="passwordHelp" class="form-text"></div>
-                <div class="mb-3">
-                    <label for="passwordSecondInput" class="form-label">Inserte de nuevo su contraseña</label>
-                    <input type="password" class="form-control" id="passwordSecondInput">
-                </div>
-                <div id="secondPasswordHelp" class="form-text"></div>
-                <div id="loginHelp" class="form-text"></div>
-                <input type="submit" class="btn btn-primary" id="submitBtn" value="Crear">
-            </form>
-        </div>
-        <div class="mainContent_login_links">
-            <a href="login.html">Ya tengo cuenta!</a>
-        </div>
+    <div class="mainContent" style="height: 500px;">
+        <h1>Usted no tiene permiso para acceder, pulse <a href="./index.html">este</a> enlace para volver al inicio</h1>
     </div>
     <div class="footer"></div>
 

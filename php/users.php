@@ -62,7 +62,12 @@ function loginUser()
     if ($result === "Credenciales incorrectas" || $result === "Error en el login") {
         echo $result;
     } else {
+
         $userData = $result->fetch_assoc();
+
+        session_start();
+        $_SESSION['username'] = $userData['username'];
+
         echo json_encode($userData);
     }
 }

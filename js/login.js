@@ -21,7 +21,6 @@ $(document).ready(function () {
                 action: "login",
             },
             success: function (res) {
-                console.log(res);
                 if (res == "Credenciales incorrectas") {
                     $(loginHelp).css({ "color": "red" });
                     $(loginHelp).text("Nombre de usuario o contraseña incorrectos");
@@ -38,6 +37,19 @@ $(document).ready(function () {
                         sessionStorage.setItem("remembered", true)
                     }
                     let rol = JSON.parse(sessionStorage.getItem("userData"))['rol'];
+                    $.ajax({
+                        type: "GET",
+                        url: "php/sessions/setSession.php",
+                        data: {
+                            username: JSON.parse(sessionStorage.getItem("userData"))['username'],
+                        },
+                        success: function (res) {
+                            console.log(res);
+                        },
+                        error: function (e) {
+                            console.log(e);
+                        }
+                    });
                     switch (rol) {
                         case 0:
                             location.href = './admin.html';
