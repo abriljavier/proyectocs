@@ -28,12 +28,14 @@
     <link rel="stylesheet" href="./css/admin.css">
     <link rel="stylesheet" href="./css/header.css">
 
-    <script src="./js/sessions/session.js"></script>
+    <script src="./js/sessions/validateSession.js"></script>
     <script src="./js/header.js"></script>
     <script src="./js/CRUD/users.js"></script>
     <script src="./js/CRUD/articles.js"></script>
     <script src="./js/CRUD/categories.js"></script>
     <script src="./js/admin.js"></script>
+    <script src="./js/darktheme.js"></script>
+
     <script>
         $(document).ready(function () {
             $('.header').load("./templates/header.html");
@@ -44,6 +46,12 @@
 
 <body>
     <div class="header"></div>
+    <div class="dialogs">
+        <!-- Dialogo al borrar -->
+        <div id="dialog-delete" title="¡Atención!">
+            <p>¿Seguro que deseas borrar la fila?</p>
+        </div>
+    </div>
     <div class="mainContentAdmin">
         <div class="mainContentAdmin_top">
             <h1>Bienvenido a su perfil de administrador</h1>
@@ -94,6 +102,7 @@
                     <input type="hidden" name="id" id="hiddenIdArticleInput">
                     <br>
                     <input type="submit" id="createArticleInput" value="Submit">
+                    <input type="submit" id="deleteTableInputArticles" value="Limpiar">
                     <p id="articleInputHelper"></p>
                 </form>
                 <form id="categoryForm">
@@ -104,6 +113,7 @@
                     <input type="hidden" name="id" id="hiddenIdCategoryInput">
                     <br>
                     <input type="submit" id="createCategoryInput" value="Submit">
+                    <input type="submit" id="deleteTableInputCategories" value="Limpiar">
                 </form>
                 <form id="userForm">
                     <div>
@@ -128,6 +138,7 @@
                     <input type="hidden" name="id" id="hiddenIdUserInput">
                     <br>
                     <input type="submit" id="createuserInput" value="Submit">
+                    <input type="submit" id="deleteTableInputUsers" value="Limpiar">
                     <p id="userInputHelper"></p>
                 </form>
             </div>

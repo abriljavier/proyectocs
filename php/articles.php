@@ -2,21 +2,31 @@
 
 require("includes/CRUDArticles.php");
 
-$action = isset($_GET['action']) ? $_GET['action'] : '';
-switch ($action) {
-    case 'create':
-        echo createArticles();
-        break;
-    case 'update':
-        echo updateArticles();
-        break;
-    case 'read':
-        echo readArticles();
-        break;
-    case 'delete':
-        echo deleteArticles();
-        break;
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    $action = isset($_POST['action']) ? $_POST['action'] : '';
+    switch ($action) {
+        case 'updateStock':
+            echo updateStock();
+            break;
+    }
+} else {
+    $action = isset($_GET['action']) ? $_GET['action'] : '';
+    switch ($action) {
+        case 'create':
+            echo createArticles();
+            break;
+        case 'update':
+            echo updateArticles();
+            break;
+        case 'read':
+            echo readArticles();
+            break;
+        case 'delete':
+            echo deleteArticles();
+            break;
+    }
 }
+
 
 function createArticles()
 {
@@ -77,5 +87,16 @@ function deleteArticles()
     $id_article = $_GET['id'];
     $dataBase = new Articles();
     $result = $dataBase->delete([$id_article]);
+    echo $result;
+}
+
+function updateStock()
+{
+    $id_article = $_POST['id_article'];
+    $stockBuyed = $_POST['stockBuyed'];
+
+    $database = new Articles();
+
+    $result = $database->updateStock([$id_article, $stockBuyed]);
     echo $result;
 }

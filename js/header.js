@@ -1,16 +1,33 @@
 $(document).ready(function () {
+    $(document).on("click", "#home", function () {
+        location.href = 'index.html';
+    })
     $.ajax({
         type: "GET",
         url: "php/sessions/checkSession.php",
         success: function (res) {
             if (res == "Sesión ok") {
-                $('button#private').text("Cerrar sesión");
+                localStorage.setItem("haySesion", true);
+
+                $('button#private').text("Privada");
                 $('button#private').on("click", function () {
+                    let rol = JSON.parse(sessionStorage.getItem("userData"))['rol'];
+                    if (rol == 0) {
+                        location.href = './admin.html';
+                    } else {
+                        location.href = './private.html';
+                    }
+                })
+
+                $('button#cerrarSesion').css("display", "block");
+                $('button#cerrarSesion').on("click", function () {
+                    localStorage.setItem("haySesion", false);
                     $.ajax({
                         type: "GET",
                         url: "php/sessions/destroySession.php",
                         success: function (res) {
                             if (res == "sesión destruida") {
+                                sessionStorage.clear();
                                 location.href = "./index.html";
                             }
                         },
@@ -20,9 +37,10 @@ $(document).ready(function () {
                     });
                 });
             } else {
-                $('button#private').text("Página privada");
+                $('button#cerrarSesion').css("display", "none");
+                $('button#private').text("Acceder");
                 $('button#private').on("click", function () {
-                    location.href = "login.html";
+                    location.href = 'login.html';
                 })
             }
         },
@@ -30,44 +48,31 @@ $(document).ready(function () {
             console.log(e);
         }
     });
-    // setTimeout(function () {
-    //     //EXTRAER EN QUE PÁGINA ESTOY
-    //     var url = window.location.href;
-    //     var fileNameWithExtension = url.substring(url.lastIndexOf('/') + 1);
-    //     var fileNameWithoutExtension = fileNameWithExtension.substring(0, fileNameWithExtension.lastIndexOf('.'));
-    //     switch (fileNameWithoutExtension) {
-    //         case "login":
-    //             $('button#private').text("Página privada");
-    //             $('button#private').on("click", function () {
-    //                 location.href = "login.html";
-    //             })
-    //             break;
-    //         case "private":
-    //             $('button#private').text("Cerrar sesión");
-    //             $('button#private').on("click", function () {
-    //                 $.ajax({
-    //                     type: "GET",
-    //                     url: "php/sessions/destroySession.php",
-    //                     success: function (res) {
-    //                         console.log(res);
-    //                     },
-    //                     error: function (e) {
-    //                         console.log(e);
-    //                     }
-    //                 });
-    //             });
-    //             break;
-    //         default:
-    //             $('button#private').text("Página privada");
-    //             $('button#private').on("click", function () {
-    //                 location.href = "login.html";
-    //             })
-    //             break;
+    // $(document).on('click', '#toggle-theme', function () {
+    //     console.log("entro");
+    //     if (localStorage.getItem("dark")) {
+    //         var darkMediaQuery = document.querySelector('style[data-dark-mode]');
+    //         if (darkMediaQuery) {
+    //             darkMediaQuery.remove();
+    //         }
+    //         localStorage.removeItem('dark');
+    //     } else {
+    //         var styleElement = document.createElement('style');
+    //         styleElement.setAttribute('data-dark-mode', '');
+    //         styleElement.textContent = `
+    //             @media (prefers-color-scheme: dark) {
+    //                 :root {
+    //                     --c-background: #333333;
+    //                     --c-first: #77A8A6;
+    //                     --c-second: #6C8E6A;
+    //                     --c-terciary: #8C818F;
+    //                     --c-dark: #ffffff;
+    //                 }
+    //             }
+    //         `;
+    //         document.head.appendChild(styleElement);
+    //         localStorage.setItem('dark', 'true');
     //     }
-
-    //     $('button#cart').on("click", function () {
-    //         location.href = "cart.html";
-    //     })
-    // }, 500);
+    // })
 
 });

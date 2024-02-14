@@ -88,23 +88,38 @@ $(document).ready(function () {
     // BORRAR ARTICLE
     $(document).on("click", "#delGameBtn", function () {
         var row = $(this).closest('tr');
-        $.ajax({
-            type: "GET",
-            url: "php/articles.php",
-            data: {
-                action: "delete",
-                id: $(this).parent().parent().children('#hidden').text()
-            },
-            success: function (res) {
-                if (res === "Articulo eliminado correctamente") {
-                    $('#helper').text("Articulo eliminado correctamente");
-                    row.remove();
-                } else {
-                    $('#helper').text("Error al eliminar el artículo " + res);
+        let id = $(this).parent().parent().children('#hidden').text();
+        $("#dialog-delete").dialog({
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: {
+                "Si": function () {
+                    $.ajax({
+                        type: "GET",
+                        url: "php/articles.php",
+                        data: {
+                            action: "delete",
+                            id: id,
+                        },
+                        success: function (res) {
+                            if (res === "Articulo eliminado correctamente") {
+                                $('#helper').text("Articulo eliminado correctamente");
+                                row.remove();
+                            } else {
+                                $('#helper').text("Error al eliminar el artículo " + res);
+                            }
+                        },
+                        error: function (err) {
+                            console.log("Error en la solicitud AJAX" + err);
+                        }
+                    });
+                    $(this).dialog("close");
+                },
+                "Cancelar": function () {
+                    $(this).dialog("close");
                 }
-            },
-            error: function (err) {
-                console.log("Error en la solicitud AJAX" + err);
             }
         });
     });
@@ -234,6 +249,19 @@ $(document).ready(function () {
         $('#hiddenIdArticleInput').val(currentArticle.id_article);
         $('#categoryArticleInput').val(currentArticle.id_category);
 
+    });
+    // FUNCIÓN PARA LIMPIAR LA TABLA
+    $(document).on("click", "#deleteTableInputArticles", function (event) {
+        event.preventDefault()
+        $('#nameArticleInput').val("");
+        $('#brandArticleInput').val("");
+        $('#stockArticleInput').val("");
+        $('#priceArticleInput').val("");
+        $('#descriptionArticleInput').val("");
+        $('#detailsArticleInput').val("");
+        $('#imgArticleInput').val("");
+        $('option[val="1"]').prop("selected");
+        $('#hiddenIdArticleInput').val("");
     });
 
     function cleanForm() {

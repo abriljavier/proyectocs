@@ -75,25 +75,40 @@ $(document).ready(function () {
     // FUNCIÓN BORRAR CATEGORY
     $(document).on("click", "#delCategoryBtn", function () {
         var row = $(this).closest('tr');
-        $.ajax({
-            type: "GET",
-            url: "php/categories.php",
-            data: {
-                action: "delete",
-                id: $(this).parent().parent().children('#hidden').text()
-            },
-            success: function (res) {
-                if (res === "Categoria eliminada correctamente") {
-                    $('#helper').text("Categoria eliminada correctamente");
-                    row.remove();
-                } else if (res === "Existen productos asociados a esa categoria, no se puede borrar") {
-                    $('#helper').text("Existen productos asociados a esa categoria, no se puede borrar");
-                } else {
-                    $('#helper').text("Error al eliminar la categoria " + res);
+        let id = $(this).parent().parent().children('#hidden').text();
+        $("#dialog-delete").dialog({
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: {
+                "Si": function () {
+                    $.ajax({
+                        type: "GET",
+                        url: "php/categories.php",
+                        data: {
+                            action: "delete",
+                            id: id,
+                        },
+                        success: function (res) {
+                            if (res === "Categoria eliminada correctamente") {
+                                $('#helper').text("Categoria eliminada correctamente");
+                                row.remove();
+                            } else if (res === "Existen productos asociados a esa categoria, no se puede borrar") {
+                                $('#helper').text("Existen productos asociados a esa categoria, no se puede borrar");
+                            } else {
+                                $('#helper').text("Error al eliminar la categoria " + res);
+                            }
+                        },
+                        error: function (err) {
+                            console.log("Error en la solicitud AJAX" + err);
+                        }
+                    });
+                    $(this).dialog("close");
+                },
+                "Cancelar": function () {
+                    $(this).dialog("close");
                 }
-            },
-            error: function (err) {
-                console.log("Error en la solicitud AJAX" + err);
             }
         });
     });
@@ -199,7 +214,12 @@ $(document).ready(function () {
         // LOS VALORES
         $('#categroyCategoryInput').val(currentCategory.category);
         $('#hiddenIdCategoryInput').val(currentCategory.id_category);
-
+    });
+    // FUNCIÓN PARA LIMPIAR LA TABLA
+    $(document).on("click", "#deleteTableInputCategories", function (event) {
+        event.preventDefault()
+        $('#categroyCategoryInput').val("");
+        $('#hiddenIdCategoryInput').val("");
     });
     // FUNCIÓN PARA RESETEAR LOS MENSAJES DE AYUDA
     function cleanForm() {

@@ -28,9 +28,10 @@
     <link rel="stylesheet" href="./css/private.css">
     <link rel="stylesheet" href="./css/header.css">
 
-    <!-- <script src="./js/sessions/session.js"></script> -->
+    <script src="./js/darktheme.js"></script>
+    <script src="./js/sessions/validateSession.js"></script>
     <script src="./js/header.js"></script>
-    <script src="./js/private.js"></script>
+    <script defer src="./js/private.js"></script>
     <script>
         $(document).ready(function () {
             $('.header').load("./templates/header.html");
@@ -41,6 +42,11 @@
 
 <body>
     <div class="header"></div>
+    <div class="dialogs">
+        <div id="dialog-confirm_chagePass" title="Seguro que quiere modificar su contraseña">
+            <p>Va a modificar su contraseña, ¿seguro?</p>
+        </div>
+    </div>
     <div class="mainContent">
         <div class="mainContent_top">
             <h1>Bienvenido a su perfil de usuario</h1>
@@ -55,10 +61,11 @@
                     <label for="username">Nombre de usuario</label>
                     <input type="text" name="username" id="username" value="valor" readonly>
                     <label for="password">Contraseña</label>
-                    <input type="password" name="password" id="password" value="valor" readonly>
+                    <input type="password" name="password" id="password" value="">
                     <label for="email">Email</label>
                     <input type="email" name="email" id="email" value="valor" readonly>
-                    <button id="updateUserDataBtn" disabled>Modificar Contraseña</button>
+                    <button id="updateUserDataBtn">Modificar Contraseña</button>
+                    <p id="chagePasswordHelper">Debe introducir una nueva contraseña para modificarla</p>
                     <button id="updateAvatarDataBtn" disabled>Modificar Avatar</button>
                 </form>
             </div>

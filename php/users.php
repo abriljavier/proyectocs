@@ -11,6 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         case 'login':
             echo loginUser();
             break;
+        case 'update':
+            echo update();
     }
 } else {
     $action = isset($_GET['action']) ? $_GET['action'] : '';
@@ -27,10 +29,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 function createUser()
 {
     $username = $_POST["username"];
-    $password = $_POST["password"];
+    // $password = $_POST["password"];
+    $password = isset($_POST["password"]) ? $_POST['password'] : '';
     $email = $_POST["email"];
     $rol = isset($_POST['rol']) ? $_POST['rol'] : 1;
-    if ($_POST['id_user'] == '') {
+    if (!isset($_POST['id_user']) || $_POST['id_user'] == '') {
         $data = array($username, $password, $email, $rol);
         $dataBase = new Users();
         $result = $dataBase->create($data);
@@ -41,13 +44,24 @@ function createUser()
         }
     } else {
         $id_user = $_POST['id_user'];
-        $data = array($id_user, $username, $password, $email, $rol);
-        $dataBase = new Users();
-        $result = $dataBase->update($data);
-        if ($result === true) {
-            echo true;
+        if (!isset($_POST['password']) || $_POST['password'] == '') {
+            $data = array($id_user, $username, $email, $rol);
+            $dataBase = new Users();
+            $result = $dataBase->updateNoPass($data);
+            if ($result === true) {
+                echo true;
+            } else {
+                echo $result;
+            }
         } else {
-            echo $result;
+            $data = array($id_user, $username, $password, $email, $rol);
+            $dataBase = new Users();
+            $result = $dataBase->update($data);
+            if ($result === true) {
+                echo true;
+            } else {
+                echo $result;
+            }
         }
     }
 }
@@ -90,5 +104,14 @@ function deleteUser()
     $userId = $_GET['id_user'];
     $dataBase = new Users();
     $result = $dataBase->delete([$userId]);
+    echo $result;
+}
+
+function update()
+{
+    $password = $_POST['password'];
+    $id = $_POST['id'];
+    $dataBase = new Users();
+    $result = $dataBase->onlyPasswordUptadate([$id, $password]);
     echo $result;
 }

@@ -1,11 +1,32 @@
 $(document).ready(function () {
 
+    $('.carousel').slick({
+        dots: true,
+        infinite: true,
+        speed: 500,
+        fade: true,
+        autoplay: true,
+        cssEase: 'linear'
+    });
+
     var allProducts = [];
     var filteredArticles = [];
     var brandsArray = [];
     var categoriesArray = [];
     var data = [];
     var firstTime = true;
+    var haySesion = false;
+    if (!localStorage.getItem('cart')) {
+        var shoppingCart = {};
+        localStorage.setItem("cart", JSON.stringify(shoppingCart))
+    } else {
+        shoppingCart = JSON.parse(localStorage.getItem('cart'));
+    }
+
+    setTimeout(function () {
+        haySesion = localStorage.getItem("haySesion");
+        // localStorage.removeItem("haySesion");
+    }, 500)
 
     //CARGA LOS DATOS DE LOS ARTÍCULOS
     $.ajax({
@@ -44,18 +65,25 @@ $(document).ready(function () {
     function print(articles) {
         $(".mainContent_cardContainer").empty();
         for (var x of articles) {
-            $(`<div class="card" style="width: 18rem;">
+            // Crear elemento de tarjeta
+            var cardElement = $(`<div class="card" style="width: 18rem;">
                 <img class="card-img-top" src="./assets/${x.img}" alt="${x.name}">
                 <div class="card-body">
                   <h5 class="card-title">${x.name}</h5>
                   <p class="card-text">${x.brand}</p>
-                  <p class="card-text"><a href="">${x.category}</a></p>
+                  <p class="card-text"><a href="#" onclick="return false;">${x.category}</a></p>
                   <p class="card-text">${x.price} €</p>
                   <p class="card-p-hidden">${x.id_article}</p>
-                  <a href="#" id="detailsBtn" class="btn btn-primary card-btn">Ver más</a>
                 </div>
-            </div>
-            `).appendTo(".mainContent_cardContainer");
+            </div>`);
+
+            if (x.stock > 0) {
+                cardElement.find('.card-body').append('<a href="#" id="detailsBtn" class="btn btn-primary card-btn">Ver más</a>');
+            } else {
+                cardElement.find('.card-body').append('<p class="text-danger">No hay stock disponible</p>');
+            }
+
+            cardElement.appendTo(".mainContent_cardContainer");
         }
     }
 
@@ -129,8 +157,8 @@ $(document).ready(function () {
         $("#slider-range").slider({
             range: true,
             min: 0,
-            max: 200,
-            values: [50, 100],
+            max: 300,
+            values: [20, 100],
             slide: function (event, ui) {
                 changedPrice = true;
                 $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
@@ -263,8 +291,6 @@ $(document).ready(function () {
             }
         }
 
-
-
         // Función para actualizar los controles de paginación
         function updatePagination() {
             $(".pagination").empty();
@@ -306,9 +332,10 @@ $(document).ready(function () {
         let ul = $("<ul>").addClass("dialog-content-data-ul");
         let price = $("<li>").addClass("dialog-price").text("Precio: " + cardInfo.price + " €");
         let stock = $("<li>").addClass("dialog-stock").text("Stock: " + cardInfo.stock);
-        let category = $("<li>").addClass("dialog-category").text("Category: " + cardInfo.category);
+        let details = $("<li>").addClass("dialog-stock").text("Detalles: " + cardInfo.details);
+        let category = $("<li>").addClass("dialog-category").text("Categoria: " + cardInfo.category);
 
-        ul.append(price, stock, category);
+        ul.append(price, stock, category, details);
         data.append(description, ul);
         info.append(brand, data);
         container.append(img, info);
@@ -317,17 +344,79 @@ $(document).ready(function () {
         $("#dialog").empty().append(dialogContent);
         $("#dialog").dialog({
             resizable: false,
-            height: "auto",
             width: 1366,
             height: 800,
             modal: true,
             draggable: false,
-            buttons: {
-                "Añadir al carro": function () {
-                    $(this).dialog("close");
+            buttons: [
+                {
+                    text: "Añadir al carro",
+                    click: function () {
+                        cardInfo.stock = cardInfo.stock - 1;
+                        if (localStorage.getItem("haySesion") == "true") {
+                            if (cardInfo.stock >= 0) {
+                                let productToAdd = allProducts.find(product => product.id_article === cardId);
+                                if (productToAdd) {
+                                    if (shoppingCart[productToAdd.id_article]) {
+                                        shoppingCart[productToAdd.id_article].cantidad += 1;
+                                    } else {
+                                        shoppingCart[productToAdd.id_article] = { ...productToAdd, cantidad: 1 };
+                                    }
+                                    localStorage.setItem('cart', JSON.stringify(shoppingCart));
+                                }
+                                $("#dialog-message-good").dialog({
+                                    modal: true,
+                                    resizable: false,
+                                    width: 800,
+                                    height: 250,
+                                    buttons: {
+                                        "Seguir comprando": function () {
+                                            $(this).dialog("close");
+                                        },
+                                        "Ir a mi carrito": function () {
+                                            location.href = "carrito.html";
+                                        }
+                                    }
+                                });
+                            } else {
+                                $("#dialog-message-noStock").dialog({
+                                    modal: true,
+                                    resizable: false,
+                                    width: 800,
+                                    height: 250,
+                                    buttons: {
+                                        "Ok": function () {
+                                            $(this).dialog("close");
+                                        },
+                                    }
+                                });
+                            }
+
+                        } else {
+                            $("#dialog-message-bad").dialog({
+                                modal: true,
+                                resizable: false,
+                                width: 800,
+                                height: 250,
+                                buttons: {
+                                    Ok: function () {
+                                        $(this).dialog("close");
+                                    }
+                                }
+                            });
+                        }
+                    }
                 },
-                Cancel: function () {
-                    $(this).dialog("close");
+                {
+                    text: "Cancel",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ],
+            create: function () {
+                if (cardInfo.stock <= 0) {
+                    $(this).next().children().children().first().attr("disabled", true);
                 }
             }
         });
@@ -336,9 +425,101 @@ $(document).ready(function () {
     //EL BOTÓN DE BORRAR FILTROS
     $(document).on("click", "#deleteFiltersButton", function () {
         firstTime = true;
+        changedOption = false;
         $("#search").val("");
         $("#tags").val("");
         filteredArticles = allProducts.slice();
         paging();
     })
+
+    //EL BOTÓN PARA MOSTRAR EL CARRITO
+    $(document).on("click", "#cart", function () {
+        console.log(haySesion);
+        if (localStorage.getItem("haySesion") == "true") {
+            let cartProducts = JSON.parse(localStorage.getItem("cart") || '{}'); // Asegurar que no sea null
+            let dialogCartContent = $("<div>").addClass("shopping-cart-content");
+            let subtotal = 0;
+
+            $.each(cartProducts, function (index, product) {
+                let itemPrice = parseFloat(product.price) * product.cantidad;
+                subtotal += itemPrice;
+
+                let item = $("<div>").addClass("cart-item");
+                let name = $("<div>").addClass("cart-item-name").text(product.name);
+                let price = $("<div>").addClass("cart-item-price").text("Precio: " + product.price + " €");
+                let quantity = $("<div>").addClass("cart-item-quantity").text("Cantidad: " + product.cantidad);
+                let delButton = $("<button>").addClass("cart-item-button").text("X").click(function () {
+                    // Disminuir cantidad o eliminar producto del carrito
+                    if (cartProducts[index].cantidad > 1) {
+                        cartProducts[index].cantidad -= 1;
+                        $(this).siblings('.cart-item-quantity').text("Cantidad: " + cartProducts[index].cantidad);
+                    } else {
+                        delete cartProducts[index];
+                        $(this).closest('.cart-item').remove();
+                    }
+                    localStorage.setItem("cart", JSON.stringify(cartProducts));
+                    calculateSubtotal();
+                });
+
+                item.append(name, price, quantity, delButton);
+                dialogCartContent.append(item);
+            });
+
+            // Agregar subtotal al diálogo
+            let subtotalElement = $("<div>").addClass("cart-subtotal").text("Subtotal: " + subtotal.toFixed(2) + " €");
+            dialogCartContent.append(subtotalElement);
+
+            // Función para recalcular el subtotal
+            function calculateSubtotal() {
+                let newSubtotal = 0;
+                $.each(cartProducts, function (index, product) {
+                    if (product) {
+                        newSubtotal += parseFloat(product.price) * product.cantidad;
+                    }
+                });
+                $(".cart-subtotal").text("Subtotal: " + newSubtotal.toFixed(2) + " €");
+            }
+
+            // Configurar el diálogo del carrito
+            $("#dialog-cart-good").empty().append(dialogCartContent).dialog({
+                dialogClass: "shoppingCartDialog",
+                open: function (event, ui) {
+                    $(this).dialog("widget").css({
+                        "position": "absolute",
+                        "height": "auto",
+                        "width": "424.6px",
+                        "top": "242.422px",
+                        "left": "1000px"
+                    });
+                },
+                modal: true,
+                resizable: false,
+                draggable: false,
+                buttons: {
+                    "Vaciar Carrito": function () {
+                        localStorage.setItem("cart", "");
+                        $("#dialog-cart-good").dialog("close");
+                    },
+                    "Comprar": function () {
+                        location.href = 'shopping.html';
+                    }
+                },
+            })
+        } else {
+            location.href = './login.html';
+        }
+
+    });
+
+    function applyDarkModeToElement($element) {
+        $element.addClass('dark-mode');
+        $element.children().each(function () {
+            applyDarkModeToElement($(this));
+        });
+    }
+
+    if (localStorage.getItem("dark")) {
+        console.log("Es modo oscuro");
+        applyDarkModeToElement($('body'));
+    }
 });

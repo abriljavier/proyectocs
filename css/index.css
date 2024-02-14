@@ -4,11 +4,13 @@
 
 .mainContent {
     display: flex;
+    min-height: 70em;
 }
 
 
 .mainContent_left {
-    min-width: 30%;
+    padding-top: 5em;
+    min-width: 20%;
     background-color: var(--c-background);
     display: flex;
     flex-direction: column;
@@ -39,7 +41,7 @@
     display: flex;
     flex-direction: column;
     background-color: var(--c-background);
-    min-width: 70%;
+    min-width: 80%;
 
     h2 {
         margin: 0px auto;
@@ -62,18 +64,30 @@
         .card {
             margin: 2em;
             padding: 0.5em;
-            min-height: 30em;
+            min-height: 39em;
             min-width: 20em;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            border-radius: 8px;
+            background-color: #fff;
+            transition: box-shadow 0.3s ease-in-out;
+        }
 
-            .card-btn {
-                background-color: var(--c-second);
-                border: 1px solid var(--c-second);
-                color: var(--c-dark);
-            }
+        .card-btn {
+            background-color: var(--c-second);
+            border: none;
+            color: var(--c-dark);
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-            .card-p-hidden {
-                display: none;
-            }
+        .card-btn:hover {
+            background-color: #4D7798;
+        }
+
+        .card-p-hidden {
+            display: none;
         }
     }
 }
@@ -95,12 +109,43 @@
 #dialog {
     display: none;
 
-    .dialog-content {}
 }
 
-.ui-dialog-titlebar {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px;
+.dialogText {
+    display: none;
+}
+
+.carousel {
+    height: 300px;
+    width: 700px;
+    margin: 2em auto;
+}
+
+.empty-stock-card {
+    background-color: grey;
+}
+
+/* ///////////////////////////////////////////////////////////////////// */
+/* MODO OSCURO */
+/* ///////////////////////////////////////////////////////////////////// */
+
+.dark-mode .mainContent_left {
+    background-color: var(--c-background-dark);
+}
+
+.dark-mode .mainContent_right {
+    background-color: var(--c-background-dark);
+}
+
+.dark-mode .card {
+    background-color: var(--c-background-dark);
+}
+
+.dark-mode .card-btn {
+    background-color: var(--c-second-dark);
+    color: var(--c-dark-dark);
+}
+
+.dark-mode .card-btn:hover {
+    background-color: #4D7798;
 }

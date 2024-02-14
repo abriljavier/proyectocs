@@ -75,3 +75,7 @@
 h1 {
     margin: 0px auto;
 }
+
+.dialogs {
+    display: none;
+}

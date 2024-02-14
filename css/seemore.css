@@ -1,0 +1,57 @@
+.dialog-content {
+    min-height: 400px;
+
+    .dialog-content-title {
+        font-weight: bold;
+        padding-left: 1.5em;
+    }
+
+    .dialog-content-container {
+        height: 100px;
+        display: flex;
+        align-items: center;
+    }
+
+    .dialog-content-image {
+        max-height: 400px;
+        min-width: 200px;
+    }
+
+    .dialog-content-info {
+        min-height: 600px;
+        background-color: #DDE3E1;
+
+        .dialog-subtitle {
+            border-radius: 30px;
+            background-color: white;
+        }
+
+        .dialog-content-data {
+            max-height: 300px;
+            margin: 5% 2%;
+
+            .dialog-description {
+                font-size: 1.3em;
+                background-color: white;
+                min-height: 400px;
+                line-height: 1.5em;
+            }
+
+            .dialog-content-data-ul {
+                min-width: 40%;
+
+                li {
+                    border: 1px solid var(--c-dark);
+                    font-size: medium;
+                    font-weight: bold;
+                    background-color: white;
+                    max-height: 10px;
+                    border-radius: 20px;
+                    margin: 5% 0%;
+                    display: flex;
+                    align-items: center;
+                }
+            }
+        }
+    }
+}

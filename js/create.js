@@ -45,12 +45,23 @@ $(document).ready(function () {
     // VALIDACIÓN DE PASSWORD 1
     $('#passwordInput').on("input", function () {
         let password = $('#passwordInput').val();
+        let mayusAndMinus = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+        let specialChar = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/;
         let passwordRegex = /^\S{8,}$/;
         if (passwordRegex.test(password)) {
             acceptedPass = true;
+            $('#fortitude').text("Fortaleza: débil");
+
+            if (mayusAndMinus.test(password)) {
+                $('#fortitude').text("Forleza: media");
+            }
+            if (specialChar.test(password)) {
+                $('#fortitude').text("Forleza: alta");
+            }
             $('#passwordHelp').text("");
         } else {
             acceptedPass = false;
+            $('#fortitude').text("");
             $('#passwordHelp').text("La contraseña debe tener al menos 8 carácteres y no puede contener espacios en blanco.");
         }
         enableSubmitButton();
@@ -72,10 +83,21 @@ $(document).ready(function () {
 
     // FUNCIÓN PARA DESABILITAR EL BOTÓN DE ENVIO
     function enableSubmitButton() {
-        if (acceptedUser && acceptedEmail && acceptedPass && secondPass) {
-            $('#submitBtn').prop("disabled", false);
-        } else {
-            $('#submitBtn').prop("disabled", true);
+        if ($('#passwordSecondInput').val().length != 0) {
+            let password = $('#passwordInput').val();
+            let secondPassword = $('#passwordSecondInput').val();
+            if (password !== secondPassword) {
+                secondPass = false;
+                $('#secondPasswordHelp').text("Las contraseñas no coinciden");
+            } else {
+                secondPass = true;
+                $('#secondPasswordHelp').text("");
+            }
+            if (acceptedUser && acceptedEmail && acceptedPass && secondPass) {
+                $('#submitBtn').prop("disabled", false);
+            } else {
+                $('#submitBtn').prop("disabled", true);
+            }
         }
     }
 

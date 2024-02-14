@@ -1,4 +1,5 @@
 <?php
+
 require_once("Connection.php");
 
 class Articles
@@ -77,5 +78,41 @@ class Articles
         $result = $mySQL->query($sql);
         $sqlConnection->closeConnection($mySQL);
         return $result->fetch_all(MYSQLI_BOTH);
+    }
+
+    public function updateStock($data)
+    {
+        $sqlConnection = new Connection();
+        $mySQL = $sqlConnection->getConnection();
+
+        $stmt = $mySQL->prepare("SELECT id_article, name, stock FROM articles WHERE id_article = ?");
+        $stmt->bind_param("i", $data[0]);
+
+        try {
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) {
+                $article = $result->fetch_assoc();
+
+                if ($article['stock'] >= $data[1]) {
+                    $stmt = $mySQL->prepare("UPDATE articles SET stock = stock - ? WHERE id_article = ?");
+                    $stmt->bind_param("ii", $data[1], $data[0]);
+                    $stmt->execute();
+                    $stmt->close();
+                    $sqlConnection->closeConnection($mySQL);
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                $stmt->close();
+                $sqlConnection->closeConnection($mySQL);
+                return false;
+            }
+        } catch (Exception $e) {
+            $stmt->close();
+            $sqlConnection->closeConnection($mySQL);
+            return false;
+        }
     }
 }

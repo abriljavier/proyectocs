@@ -24,15 +24,23 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 
+    <!-- Slick -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+
     <!-- Styles personalizados -->
     <link rel="stylesheet" href="./css/colors.css">
     <link rel="stylesheet" href="./css/header.css">
     <link rel="stylesheet" href="./css/index.css">
     <link rel="stylesheet" href="./css/details.css">
+    <link rel="stylesheet" href="./css/seemore.css">
 
     <!-- JS -->
-    <script src="./js/index.js"></script>
-    <script src="./js/details.js"></script>
+    <script src="./js/darktheme.js"></script>
+    <script defer src="./js/index.js"></script>
+    <script defer src="./js/details.js"></script>
+    <script defer src="./js/cart.js"></script>
     <script>
         $(document).ready(function () {
             $('.header').load("./templates/header.html");
@@ -46,6 +54,64 @@
 <body>
     <div class="header"></div>
     <div class="mainContent">
+        <div class="dialogs">
+            <!-- Dialogo para informar que no hay usuario creado al comprar -->
+            <div class="dialogText">
+                <div id="dialog-message-bad" title="No se encuentra usuario">
+                    <h2 style="text-align: center;">
+                        Necesitas tener un usuario para comprar, recuerda iniciar sesión <a href="login.html">aqui</a>
+                    </h2>
+                </div>
+            </div>
+            <!-- Dialogo para informar que se ha añadido el producto al carrito -->
+            <div class="dialogText">
+                <div id="dialog-message-good" title="Producto añadido al carrito">
+                    <h2 style="text-align: center;">
+                        !Se ha añadido el producto al carrito!
+                    </h2>
+                </div>
+            </div>
+            <!-- Dialogo para informar que de que no quedan en stock -->
+            <div class="dialogText">
+                <div id="dialog-message-noStock" title="No quedan artículos en stock">
+                    <h2 style="text-align: center;">
+                        Lo siento, tendrás que esperar a que recibamos más
+                    </h2>
+                </div>
+            </div>
+            <!-- Dialogo de carrito si hay user -->
+            <div class="dialogText">
+                <div id="dialog-cart-good" title="Mi carrito">
+                    <div id="cart-items">
+                        <table style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Nombre del Producto 1</td>
+                                    <td>
+                                        <input type="number" value="1" min="1" style="width: 50px;">
+                                    </td>
+                                    <td>$10.00</td>
+                                    <td>
+                                        <button type="button">Eliminar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="cart-total" style="text-align: right; margin-top: 10px;">
+                        <strong>Subtotal: $10.00</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="mainContent_left">
             <div class="mainContent_left_title">SELECCIONA TU JUEGO FAVORITO!</div>
             <div class="mainContent_left_filtername">Busca tu juego preferido
@@ -79,20 +145,36 @@
             </div>
         </div>
         <div class="mainContent_right">
-            <h2>Toda nuestra colección de juegos</h2>
-            <div class="mainContent_cardContainer">
+            <!-- 700 x 300 -->
+            <div class="carousel"">
+                <div>
+                    <img src=" ./assets/car1.png" alt="" height="300px" width="700px">
             </div>
-            <div id="dialog" title="">
-                <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>These items
-                    will be permanently deleted and cannot be recovered. Are you sure?</p>
+            <div>
+                <img src="./assets/car2.png" alt="" height="300px" width="700px">
             </div>
-            <div class="pagination"></div>
+            <div>
+                <img src="./assets/car3.png" alt="" height="300px" width="700px">
+            </div>
         </div>
+        <hr />
+        <h2>Toda nuestra colección de juegos</h2>
+        <div class="mainContent_cardContainer">
+        </div>
+        <div id="dialog" title="">
+            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>These items
+                will be permanently deleted and cannot be recovered. Are you sure?</p>
+        </div>
+        <div class="pagination"></div>
     </div>
+    </div>
+
     <div class="footer"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- JS de slick -->
+    <script type="text/javascript" src="slick/slick.min.js"></script>
 
 </body>
 

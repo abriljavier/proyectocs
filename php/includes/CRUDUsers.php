@@ -23,9 +23,9 @@ class Users
         if ($result->num_rows > 0) {
             return "El correo electrónico ya está registrado, ¿Quizá ha olvidado su contraseña?";
         }
-
+        $mede5 = md5($data[1]);
         $stmt = $mySQL->prepare("INSERT INTO users (username, password, email, rol) VALUES (?,?,?,?)");
-        $stmt->bind_param("sssi", $data[0], $data[1], $data[2], $data[3]);
+        $stmt->bind_param("sssi", $data[0], $mede5, $data[2], $data[3]);
         try {
             $stmt->execute();
             $stmt->close();
@@ -55,9 +55,43 @@ class Users
     {
         $sqlConnection = new Connection();
         $mySQL = $sqlConnection->getConnection();
-
+        $mede5 = md5($data[2]);
         $stmt = $mySQL->prepare("UPDATE users SET username=?, password=?, email=?, rol=? WHERE id_user=?");
-        $stmt->bind_param("ssssi", $data[1], $data[2], $data[3], $data[4], $data[0]);
+        $stmt->bind_param("ssssi", $data[1], $mede5, $data[3], $data[4], $data[0]);
+        try {
+            $stmt->execute();
+            $stmt->close();
+            $sqlConnection->closeConnection($mySQL);
+            return true;
+        } catch (Exception $e) {
+            return "No se ha podido modificar el usuario.";
+        }
+    }
+
+    public function updateNoPass($data)
+    {
+        $sqlConnection = new Connection();
+        $mySQL = $sqlConnection->getConnection();
+
+        $stmt = $mySQL->prepare("UPDATE users SET username=?, email=?, rol=? WHERE id_user=?");
+        $stmt->bind_param("sssi", $data[1], $data[2], $data[3], $data[0]);
+        try {
+            $stmt->execute();
+            $stmt->close();
+            $sqlConnection->closeConnection($mySQL);
+            return true;
+        } catch (Exception $e) {
+            return "No se ha podido modificar el usuario.";
+        }
+    }
+
+    public function onlyPasswordUptadate($data)
+    {
+        $sqlConnection = new Connection();
+        $mySQL = $sqlConnection->getConnection();
+        $mede5 = md5($data[1]);
+        $stmt = $mySQL->prepare("UPDATE users SET password=? WHERE id_user=?");
+        $stmt->bind_param("si", $mede5, $data[0]);
         try {
             $stmt->execute();
             $stmt->close();
@@ -110,8 +144,9 @@ class Users
         $sqlConnection = new Connection();
         $mySQL = $sqlConnection->getConnection();
 
+        $mede5 = md5($data[1]);
         $stmt = $mySQL->prepare("SELECT * FROM users WHERE username=? AND password=?");
-        $stmt->bind_param("ss", $data[0], $data[1]);
+        $stmt->bind_param("ss", $data[0], $mede5);
         try {
             $stmt->execute();
             $result = $stmt->get_result();

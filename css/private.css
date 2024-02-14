@@ -45,6 +45,8 @@
             form {
                 display: flex;
                 flex-direction: column;
+                min-width: 390px;
+                padding: 0% 5%;
 
                 input {
                     width: 100%;
@@ -70,4 +72,14 @@
             padding: 1em;
         }
     }
+}
+
+#chagePasswordHelper {
+    color: red;
+    display: none;
+    overflow-x: visible;
+}
+
+.dialogs {
+    display: none;
 }

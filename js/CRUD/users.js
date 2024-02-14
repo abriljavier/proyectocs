@@ -79,26 +79,40 @@ $(document).ready(function () {
     // FUNCIÓN BORRAR USER
     $(document).on("click", "#delUserBtn", function () {
         var row = $(this).closest('tr');
-        console.log(row);
-        $.ajax({
-            type: "GET",
-            url: "php/users.php",
-            data: {
-                action: "delete",
-                id_user: $(this).parent().parent().children('#hidden').text(),
-            },
-            success: function (res) {
-                if (res === "Usuario eliminado correctamente") {
-                    $('#helper').text("Usuario eliminado correctamente");
-                    row.remove();
-                } else if (res === "No puedes eliminar a un administrador") {
-                    $('#helper').text("Error: No puedes eliminar a un administrador");
-                } else {
-                    $('#helper').text("Error al eliminar el usuario: " + res);
+        let id = $(this).parent().parent().children('#hidden').text();
+        $("#dialog-delete").dialog({
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: {
+                "Si": function () {
+                    $.ajax({
+                        type: "GET",
+                        url: "php/users.php",
+                        data: {
+                            action: "delete",
+                            id_user: id,
+                        },
+                        success: function (res) {
+                            if (res === "Usuario eliminado correctamente") {
+                                $('#helper').text("Usuario eliminado correctamente");
+                                row.remove();
+                            } else if (res === "No puedes eliminar a un administrador") {
+                                $('#helper').text("Error: No puedes eliminar a un administrador");
+                            } else {
+                                $('#helper').text("Error al eliminar el usuario: " + res);
+                            }
+                        },
+                        error: function (err) {
+                            console.log("Error en la solicitud AJAX: " + err);
+                        }
+                    });
+                    $(this).dialog("close");
+                },
+                "Cancelar": function () {
+                    $(this).dialog("close");
                 }
-            },
-            error: function (err) {
-                console.log("Error en la solicitud AJAX: " + err);
             }
         });
     });
@@ -167,13 +181,17 @@ $(document).ready(function () {
             $('#usernameHelp').text("El nombre debe tener entre 5 y 15 carácteres.");
             return;
         }
-        let password = $('#userPasswordInput').val();
-        let passwordRegex = /^\S{8,}$/;
-        if (passwordRegex.test(password)) {
-            $('#passwordHelp').text("");
+        if ($('#hiddenIdUserInput').val() == "") {
+            let password = $('#userPasswordInput').val();
+            let passwordRegex = /^\S{8,}$/;
+            if (passwordRegex.test(password)) {
+                $('#passwordHelp').text("");
+            } else {
+                $('#passwordHelp').text("La contraseña debe tener al menos 8 carácteres y no puede contener espacios en blanco.");
+                return;
+            }
         } else {
-            $('#passwordHelp').text("La contraseña debe tener al menos 8 carácteres y no puede contener espacios en blanco.");
-            return;
+            let password = $('#userPasswordInput').val();
         }
         let email = $('#userEmailInput').val();
         let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -246,7 +264,7 @@ $(document).ready(function () {
         }
         $('#hiddenIdUserInput').val(currentUser.id_user);
         $('#userUsernameInput').val(currentUser.username);
-        $('#userPasswordInput').val(currentUser.password);
+        // $('#userPasswordInput').val(currentUser.password);
         $('#userEmailInput').val(currentUser.email);
         if (currentUser.rol == 0) {
             $('#userRolInput').prop("checked", true);
@@ -254,6 +272,15 @@ $(document).ready(function () {
             $('#userRolInput').prop("checked", false);
         }
 
+    });
+    // FUNCIÓN PARA LIMPIAR LA TABLA
+    $(document).on("click", "#deleteTableInputUsers", function (event) {
+        event.preventDefault()
+        $('#userUsernameInput').val("");
+        $('#userPasswordInput').val("");
+        $('#userEmailInput').val("");
+        $('#userRolInput').val("");
+        $('#hiddenIdUserInput').val("");
     });
     // FUNCIÓN PARA RESETEAR LOS MENSAJES DE AYUDA
     function cleanForm() {
